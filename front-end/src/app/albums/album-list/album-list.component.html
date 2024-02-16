@@ -1,0 +1,14 @@
+<div class="album">
+  <button mat-icon-button (click)="deslogar()">
+  <mat-icon>logout</mat-icon>
+</button>
+<div class="title"><h1>Álbuns</h1></div>
+<div class="album-thumbnails-container">
+
+  <div class="album-thumbnail" *ngFor="let thumbnail of albumThumbnails" (click)="showFirstTenPhotos(thumbnail.album.id)">
+    <img [src]="thumbnail.thumbnailUrl" alt="Thumbnail">
+    <p>{{ thumbnail.album.title }}</p>
+  </div>
+
+</div>
+</div>

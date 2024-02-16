@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500&display=swap");
+
+.album-thumbnails-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  justify-content: center;
+  padding: 100px;
+  margin: 0 100px;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+
+}
+.album{
+  background-image: linear-gradient(rgba(240, 239, 239, 0.692), rgba(199, 197, 197, 0.226)),  url('../../../images/white-texture.jpg');
+  justify-content: center;
+  align-items: center;
+}
+body {
+    display: flex;
+  display: -webkit-flex;
+  -webkit-justify-content: center;
+  -webkit-align-items: center;
+  justify-content: center;
+  align-items: center;
+}
+
+h1{
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1483db;
+  font-family: "Oswald", sans-serif;
+  font-weight: 600;
+  font-size: 72px;
+
+}
+button{
+  background-color: red;
+  display: block;
+  font-family: Roboto,Helvetica Neue, sans-serif;
+}
+.album-thumbnail {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  font-family: "Oswald", sans-serif;
+
+}
+
+.album-thumbnail:hover {
+  transform: scale(1.05);
+  font-family: "Oswald", sans-serif;
+
+}
+
+.album-thumbnail img {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 235px;
+border-top-left-radius: 12px;
+border-top-right-radius: 12px;
+}
+
+.album-thumbnail p {
+  margin: 10px 0;
+  font-size: 16px; /* Larger font size */
+  color: #333; /* Darker text color */
+  font-family: "Oswald", sans-serif;
+  margin: 10%;
+}
