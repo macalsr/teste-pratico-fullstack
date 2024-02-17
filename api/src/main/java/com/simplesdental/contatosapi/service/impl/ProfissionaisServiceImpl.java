@@ -2,6 +2,7 @@ package com.simplesdental.contatosapi.service.impl;
 
 import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
+import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
 import com.simplesdental.contatosapi.repository.ProfissionaisRepository;
 import com.simplesdental.contatosapi.service.ProfissionaisService;
 import org.springframework.beans.BeanUtils;
@@ -32,9 +33,9 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      */
     @Override
     public ProfissionalDTO createProfissional(ProfissionalDTO profissionalDTO) {
-        Profissional profissional = profissionalDTO.toModel();
+        Profissional profissional = ProfissionalMapper.toModel(profissionalDTO);
         profissional.setCreatedDate(LocalDateTime.now());
-        return profissionaisRepository.save(profissional).toDTO();
+        return ProfissionalMapper.toDTO(profissionaisRepository.save(profissional));
     }
 
     /**
@@ -48,7 +49,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
     public ProfissionalDTO findById(Integer id) {
         Profissional profissional = profissionaisRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado"));
-        return profissional.toDTO();
+        return ProfissionalMapper.toDTO(profissional);
     }
 
     /**
@@ -69,7 +70,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
                     .collect(Collectors.toList());
         }
         return filteredProfissionais.stream()
-                .map(profissional -> profissional.mapProfissionaisToDTO(profissional, fields))
+                .map(profissional -> ProfissionalMapper.mapProfissionaisToDTO(profissional, fields))
                 .collect(Collectors.toList());
     }
 
@@ -118,7 +119,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
 
         BeanUtils.copyProperties(profissionalDTO, profissional, "createdDate");
         Profissional updatedProfissional = profissionaisRepository.save(profissional);
-        return updatedProfissional.toDTO();
+        return ProfissionalMapper.toDTO(updatedProfissional);
     }
 
     /**

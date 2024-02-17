@@ -1,17 +1,14 @@
 package com.simplesdental.contatosapi.model.dto;
 
-
 import com.simplesdental.contatosapi.model.CargoEnum;
-import com.simplesdental.contatosapi.model.Profissional;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
+/**
+ * Classe DTO (Data Transfer Object) que representa um profissional.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,23 +16,30 @@ import java.util.Date;
 @Builder
 public class ProfissionalDTO {
 
+    /**
+     * Identificador único do profissional.
+     */
     private Integer id;
 
+    /**
+     * Nome do profissional.
+     */
     private String nome;
 
+    /**
+     * Cargo do profissional.
+     */
     private CargoEnum cargo;
 
+    /**
+     * Data de nascimento do profissional.
+     */
     private LocalDateTime nascimento;
 
+    /**
+     * Data de criação do registro do profissional.
+     */
     private LocalDateTime createdDate;
 
-
-    public Profissional toModel() {
-        return Profissional.builder()
-                .nome(this.nome)
-                .cargo(this.cargo)
-                .nascimento(this.nascimento)
-                .createdDate(this.createdDate)
-                .build();
-    }
+    private List<ContatoDTO> contatos;
 }

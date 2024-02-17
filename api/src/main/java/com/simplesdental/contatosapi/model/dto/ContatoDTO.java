@@ -1,6 +1,5 @@
 package com.simplesdental.contatosapi.model.dto;
 
-import com.simplesdental.contatosapi.model.Contato;
 import com.simplesdental.contatosapi.model.Profissional;
 import lombok.*;
 
@@ -31,6 +30,12 @@ public class ContatoDTO {
         Map<String,Object> filteredFields = new HashMap<>();
         for(String field : fields){
             switch (field){
+                case "createdDate":
+                    filteredFields.put("createdDate", this.createdDate);
+                    break;
+                case "id":
+                    filteredFields.put("id", this.id);
+                    break;
                 case "nome":
                     filteredFields.put("nome", this.getNome());
                     break;
@@ -62,15 +67,5 @@ public class ContatoDTO {
         this.setNome(null);
         this.setContato(null);
         this.setProfissional(null);
-    }
-
-
-
-    public Contato toModel(){
-        return Contato.builder()
-                .id(this.id)
-                .contato(this.contato)
-                .profissional(this.profissional.toModel())
-                .nome(this.nome).build();
     }
 }

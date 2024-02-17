@@ -3,6 +3,8 @@ package com.simplesdental.contatosapi.service.impl;
 import com.simplesdental.contatosapi.model.Contato;
 import com.simplesdental.contatosapi.model.dto.ContatoDTO;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
+import com.simplesdental.contatosapi.model.mapper.ContatoMapper;
+import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
 import com.simplesdental.contatosapi.service.ContatoService;
 import com.simplesdental.contatosapi.service.ProfissionaisService;
@@ -40,7 +42,7 @@ public class ContatoServiceImpl implements ContatoService {
     public ContatoDTO findById(Integer id) {
         Contato contato = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
-        return contato.toDTO();
+        return ContatoMapper.toDTO(contato);
     }
 
     /**
@@ -61,7 +63,7 @@ public class ContatoServiceImpl implements ContatoService {
                     .collect(Collectors.toList());
         }
         return filteredContatos.stream()
-                .map(contatos -> contatos.mapContatosToDTO(contatos, fields))
+                .map(contatos -> ContatoMapper.mapContatoToDTO(contatos, fields))
                 .collect(Collectors.toList());
     }
     private boolean contatosMatchesCriteria(Contato contato, String q) {
@@ -77,9 +79,9 @@ public class ContatoServiceImpl implements ContatoService {
         try {
             int id = Integer.parseInt(q);
             ProfissionalDTO profissionalDTO = profissionaisService.findById(id);
-            return contato.getProfissional() == profissionalDTO.toModel() || contato.getId() == Integer.parseInt(q);
+            return contato.getProfissional() == ProfissionalMapper.toModel(profissionalDTO) || contato.getId() == Integer.parseInt(q);
         } catch (NumberFormatException e) {
-            throw new RuntimeException(e);
+            return false;
         }
     }
 
@@ -92,9 +94,9 @@ public class ContatoServiceImpl implements ContatoService {
      */
     @Override
     public ContatoDTO createContato(ContatoDTO contatoDTO) {
-        Contato contato = contatoDTO.toModel();
+        Contato contato = ContatoMapper.toModel(contatoDTO);
         contato.setCreatedDate(LocalDateTime.now());
-        return repository.save(contato).toDTO();
+        return ContatoMapper.toDTO(repository.save(contato));
     }
 
     /**
@@ -111,7 +113,7 @@ public class ContatoServiceImpl implements ContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
         BeanUtils.copyProperties(contatoDTO, contato, "createdDate");
         Contato updatedContato = repository.save(contato);
-        return updatedContato.toDTO();
+        return ContatoMapper.toDTO(updatedContato);
     }
 
     /**
