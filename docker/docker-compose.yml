@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    volumes:
+      - ./postgresql:/docker-entrypoint-initdb.d 
+    environment:
+      POSTGRES_USER: simples_dental
+      POSTGRES_PASSWORD: simples_123
+      POSTGRES_DB: simplesdental
+    ports:
+      - "5432:5432"
