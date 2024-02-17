@@ -27,7 +27,7 @@ Para acessar o projeto, utilize as seguintes credenciais:
 
 ## Publicação do Código
 
-O código foi publicado em um repositório pessoal no GitHub, disponível no seguinte link: https://github.com/macalsr/photo-album-api(#).
+O código foi publicado em um repositório pessoal no GitHub, disponível no seguinte link: [https://github.com/macalsr/photo-album-api](https://github.com/macalsr/photo-album-api).
 
 ## Instruções de Uso
 
