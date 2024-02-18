@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class ContatoResponse {
 
+    private Integer id;
+
     private String nome;
 
     private String contato;

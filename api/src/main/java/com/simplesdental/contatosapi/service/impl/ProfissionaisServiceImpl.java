@@ -32,10 +32,10 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      * @return DTO do profissional criado.
      */
     @Override
-    public ProfissionalDTO createProfissional(ProfissionalDTO profissionalDTO) {
+    public Profissional createProfissional(ProfissionalDTO profissionalDTO) {
         Profissional profissional = ProfissionalMapper.toModel(profissionalDTO);
         profissional.setCreatedDate(LocalDateTime.now());
-        return ProfissionalMapper.toDTO(profissionaisRepository.save(profissional));
+        return profissionaisRepository.save(profissional);
     }
 
     /**
@@ -46,10 +46,9 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      * @throws ResponseStatusException se o profissional não for encontrado.
      */
     @Override
-    public ProfissionalDTO findById(Integer id) {
-        Profissional profissional = profissionaisRepository.findById(id)
+    public Profissional findById(Integer id) {
+        return profissionaisRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado"));
-        return ProfissionalMapper.toDTO(profissional);
     }
 
     /**
@@ -60,7 +59,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      * @return Lista de DTOs dos profissionais encontrados.
      */
     @Override
-    public List<ProfissionalDTO> findProfissionais(String q, List<String> fields) {
+    public List<Profissional> findProfissionais(String q, List<String> fields) {
         List<Profissional> allProfissionais = profissionaisRepository.findAll();
 
         List<Profissional> filteredProfissionais = allProfissionais;
@@ -70,7 +69,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
                     .collect(Collectors.toList());
         }
         return filteredProfissionais.stream()
-                .map(profissional -> ProfissionalMapper.mapProfissionaisToDTO(profissional, fields))
+                .map(profissional -> ProfissionalMapper.mapProfissionais(profissional, fields))
                 .collect(Collectors.toList());
     }
 

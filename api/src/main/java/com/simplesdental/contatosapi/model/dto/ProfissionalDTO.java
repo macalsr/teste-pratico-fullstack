@@ -16,10 +16,6 @@ import java.time.LocalDateTime;
 public class ProfissionalDTO {
 
     /**
-     * ID do profissional.
-     */
-    private Integer id;
-    /**
      * Nome do profissional.
      */
     private String nome;

@@ -45,12 +45,12 @@ class ProfissionalMapperTest {
         fields.add("nascimento");
         fields.add("createdDate");
 
-        ProfissionalDTO profissionalDTO = ProfissionalMapper.mapProfissionaisToDTO(profissional, fields);
+       Profissional profissionalMapped = ProfissionalMapper.mapProfissionais(profissional, fields);
 
-        assertNotNull(profissionalDTO);
-        assertEquals(profissional.getNome(), profissionalDTO.getNome());
-        assertEquals(profissional.getCargo(), profissionalDTO.getCargo());
-        assertEquals(profissional.getNascimento(), profissionalDTO.getNascimento());
+        assertNotNull(profissionalMapped);
+        assertEquals(profissional.getNome(), profissionalMapped.getNome());
+        assertEquals(profissional.getCargo(), profissionalMapped.getCargo());
+        assertEquals(profissional.getNascimento(), profissionalMapped.getNascimento());
     }
 
    @Test

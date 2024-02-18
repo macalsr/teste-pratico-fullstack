@@ -1,9 +1,9 @@
 package com.simplesdental.contatosapi.controller;
 
 import com.simplesdental.contatosapi.model.CargoEnum;
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
 import com.simplesdental.contatosapi.model.dto.ContatoResponse;
-import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
 import com.simplesdental.contatosapi.service.ContatoService;
 import org.junit.jupiter.api.Test;
@@ -74,27 +74,27 @@ class ContatosControllerTest {
 
     @Test
     public void testCreateContato() {
-        ContatoReceiver mockContato = new ContatoReceiver();
+        ContatoResponse mockContato = new ContatoResponse();
         when(contatoService.createContato(any())).thenReturn(mockContato);
 
         ResponseEntity<String> response = contatosController.createContato(new ContatoReceiver());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Sucesso contato com nome " + mockContato.getNome() + " cadastrado", response.getBody());
+        assertEquals("Sucesso contato com id " + mockContato.getNome() + " cadastrado", response.getBody());
     }
 
 
     @Test
     public void testUpdateContato_Success() {
-        ProfissionalDTO profissionalDTO = new ProfissionalDTO();
-        profissionalDTO.setNome("Joao");
-        profissionalDTO.setNascimento(LocalDateTime.now());
-        profissionalDTO.setCargo(CargoEnum.TESTER);
+        Profissional profissional = new Profissional();
+        profissional.setNome("Joao");
+        profissional.setNascimento(LocalDateTime.now());
+        profissional.setCargo(CargoEnum.TESTER);
 
         ContatoReceiver mockContato = new ContatoReceiver();
         mockContato.setNome("Test");
         mockContato.setContato("test@test.com");
-        mockContato.setIdProfissional(profissionalDTO.getId());
+        mockContato.setIdProfissional(profissional.getId());
         when(contatoService.updateContato(1, mockContato)).thenReturn(mockContato);
 
         ResponseEntity<String> response = contatosController.updateContato(1, mockContato);

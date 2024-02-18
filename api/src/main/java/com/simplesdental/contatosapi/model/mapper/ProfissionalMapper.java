@@ -21,7 +21,6 @@ public class ProfissionalMapper {
             return null;
         }
         return ProfissionalDTO.builder()
-                .id(profissional.getId())
                 .cargo(profissional.getCargo())
                 .nascimento(profissional.getNascimento())
                 .nome(profissional.getNome())
@@ -35,30 +34,34 @@ public class ProfissionalMapper {
      * @param fields       A lista de campos a serem incluídos no ProfissionalDTO mapeado.
      * @return Objeto ProfissionalDTO com os campos selecionados mapeados do Profissional.
      */
-    public static ProfissionalDTO mapProfissionaisToDTO(Profissional profissional, List<String> fields) {
-        ProfissionalDTO profissionalDTO = new ProfissionalDTO();
+    public static Profissional mapProfissionais(Profissional profissional, List<String> fields) {
+        Profissional profissionalMapped = new Profissional();
         if (fields == null || fields.isEmpty()) {
-            profissionalDTO.setNome(profissional.getNome());
-            profissionalDTO.setCargo(profissional.getCargo());
-            profissionalDTO.setNascimento(profissional.getNascimento());
+            return profissional;
         } else {
             for (String field : fields) {
                 switch (field) {
                     case "nome":
-                        profissionalDTO.setNome(profissional.getNome());
+                        profissionalMapped.setNome(profissional.getNome());
                         break;
                     case "cargo":
-                        profissionalDTO.setCargo(profissional.getCargo());
+                        profissionalMapped.setCargo(profissional.getCargo());
                         break;
                     case "nascimento":
-                        profissionalDTO.setNascimento(profissional.getNascimento());
+                        profissionalMapped.setNascimento(profissional.getNascimento());
+                        break;
+                    case "id":
+                        profissionalMapped.setId(profissional.getId());
+                        break;
+                    case "createdDate":
+                        profissionalMapped.setCreatedDate(profissional.getCreatedDate());
                         break;
                     default:
                         break;
                 }
             }
         }
-        return profissionalDTO;
+        return profissionalMapped;
     }
 
     /**
@@ -71,7 +74,6 @@ public class ProfissionalMapper {
             return null;
         }
         return Profissional.builder()
-                .id(profissionalDTO.getId())
                 .nome(profissionalDTO.getNome())
                 .cargo(profissionalDTO.getCargo())
                 .nascimento(profissionalDTO.getNascimento())

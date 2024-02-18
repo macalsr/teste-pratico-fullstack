@@ -2,6 +2,7 @@ package com.simplesdental.contatosapi.service.impl;
 
 import com.simplesdental.contatosapi.model.CargoEnum;
 import com.simplesdental.contatosapi.model.Contato;
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
 import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
@@ -47,6 +48,8 @@ class ContatoServiceImplTest {
     private ContatoServiceImpl contatoService;
 
     private ProfissionalDTO profissionalDTO;
+
+    private Profissional profissional;
     private Contato mockContato;
 
     private ContatoReceiver mockContatoReceiver;
@@ -57,7 +60,13 @@ class ContatoServiceImplTest {
         profissionalDTO.setNascimento(LocalDateTime.now());
         profissionalDTO.setCargo(CargoEnum.TESTER);
 
-         mockContato = new Contato();
+        profissional = new Profissional();
+        profissional.setId(1);
+        profissional.setNome("Joao");
+        profissional.setNascimento(LocalDateTime.now());
+        profissional.setCargo(CargoEnum.TESTER);
+
+        mockContato = new Contato();
         mockContato.setId(1);
         mockContato.setNome("Test");
         mockContato.setContato("test@test.com");
@@ -67,7 +76,7 @@ class ContatoServiceImplTest {
         mockContatoReceiver = new ContatoReceiver();
         mockContatoReceiver.setNome("Test");
         mockContatoReceiver.setContato("test@test.com");
-        mockContatoReceiver.setIdProfissional(profissionalDTO.getId());
+        mockContatoReceiver.setIdProfissional(profissional.getId());
 
     }
 
@@ -108,7 +117,7 @@ class ContatoServiceImplTest {
             return savedContato;
         });
 
-        ContatoReceiver result = contatoService.createContato(mockContatoReceiver);
+        ContatoResponse result = contatoService.createContato(mockContatoReceiver);
 
         verify(repository).save(any(Contato.class));
 
@@ -169,7 +178,7 @@ class ContatoServiceImplTest {
                 new Contato(2,"Maria", "contato1",LocalDateTime.now(), ProfissionalMapper.toModel(profissionalDTO))
         );
         when(repository.findAll()).thenReturn(allContatos);
-        when(profissionaisService.findById(1)).thenReturn(profissionalDTO);
+        when(profissionaisService.findById(1)).thenReturn(profissional);
 
         String q = "1";
         List<String> fields = Arrays.asList("nome", "contato", "profissional");

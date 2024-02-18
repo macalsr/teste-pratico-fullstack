@@ -48,8 +48,8 @@ public class ContatosController {
     @PostMapping
     public ResponseEntity<String> createContato(@RequestBody ContatoReceiver contatoReceiver) {
         try {
-            ContatoReceiver savedContato = contatoService.createContato(contatoReceiver);
-            return ResponseEntity.ok("Sucesso contato com nome " + savedContato.getNome() + " cadastrado");
+            ContatoResponse savedContato = contatoService.createContato(contatoReceiver);
+            return ResponseEntity.ok("Sucesso contato com id " + savedContato.getId() + " cadastrado");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }

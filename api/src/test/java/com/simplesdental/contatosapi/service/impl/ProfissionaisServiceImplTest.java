@@ -49,7 +49,7 @@ class ProfissionaisServiceImplTest {
     void testCreateProfissional() {
         when(profissionaisRepository.save(any(Profissional.class))).thenReturn(new Profissional());
 
-        ProfissionalDTO savedProfissional = profissionaisService.createProfissional(profissionalDTO);
+        Profissional savedProfissional = profissionaisService.createProfissional(profissionalDTO);
 
         verify(profissionaisRepository).save(any(Profissional.class));
 
@@ -60,7 +60,7 @@ class ProfissionaisServiceImplTest {
     void testFindById_ProfissionalExists() {
         when(profissionaisRepository.findById(anyInt())).thenReturn(Optional.of(new Profissional()));
 
-        ProfissionalDTO profissional = profissionaisService.findById(1);
+        Profissional profissional = profissionaisService.findById(1);
 
         assertNotNull(profissional);
     }
@@ -76,7 +76,7 @@ class ProfissionaisServiceImplTest {
     void testFindProfissionais() {
         when(profissionaisRepository.findAll()).thenReturn(Arrays.asList(new Profissional(), new Profissional()));
 
-        List<ProfissionalDTO> profissionais = profissionaisService.findProfissionais(null, null);
+        List<Profissional> profissionais = profissionaisService.findProfissionais(null, null);
 
         assertNotNull(profissionais);
         assertEquals(2, profissionais.size());
@@ -94,14 +94,14 @@ class ProfissionaisServiceImplTest {
         String q = "Suporte";
         List<String> fields = Arrays.asList("nome", "cargo");
 
-        List<ProfissionalDTO> profissionais = profissionaisService.findProfissionais(q, fields);
+        List<Profissional> profissionais = profissionaisService.findProfissionais(q, fields);
 
         assertNotNull(profissionais);
         assertEquals(1, profissionais.size());
 
-        ProfissionalDTO profissionalDTO = profissionais.get(0);
-        assertNotNull(profissionalDTO.getNome());
-        assertEquals(CargoEnum.SUPORTE, profissionalDTO.getCargo());
+        Profissional profissional = profissionais.get(0);
+        assertNotNull(profissional.getNome());
+        assertEquals(CargoEnum.SUPORTE, profissional.getCargo());
     }
 
     @Test

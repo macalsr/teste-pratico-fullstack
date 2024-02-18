@@ -16,7 +16,7 @@ public interface ContatoService {
      * @param contato O objeto ContatoDTO representando o novo contato a ser criado.
      * @return O objeto ContatoDTO representando o contato recém-criado.
      */
-    ContatoReceiver createContato(ContatoReceiver contato);
+    ContatoResponse createContato(ContatoReceiver contato);
 
     /**
      * Encontra um contato pelo ID.

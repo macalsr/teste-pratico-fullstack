@@ -1,5 +1,6 @@
 package com.simplesdental.contatosapi.controller;
 
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.service.ProfissionaisService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,9 +31,9 @@ public class ProfissionalController {
      * @return Lista de profissionais encontrados.
      */
     @GetMapping
-    public ResponseEntity<List<ProfissionalDTO>> getProfissionais(@RequestParam(required = false) String q,
+    public ResponseEntity<List<Profissional>> getProfissionais(@RequestParam(required = false) String q,
                                                                   @RequestParam(required = false) List<String> fields) {
-        List<ProfissionalDTO> profissionais = service.findProfissionais(q, fields);
+        List<Profissional> profissionais = service.findProfissionais(q, fields);
         return ResponseEntity.ok(profissionais);
     }
 
@@ -43,10 +44,10 @@ public class ProfissionalController {
      * @return Profissional encontrado.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ProfissionalDTO> getProfissionalById(@PathVariable Integer id) {
-        ProfissionalDTO profissionalDTO = service.findById(id);
-        if (profissionalDTO != null) {
-            return ResponseEntity.ok(profissionalDTO);
+    public ResponseEntity<Profissional> getProfissionalById(@PathVariable Integer id) {
+        Profissional profissional = service.findById(id);
+        if (profissional != null) {
+            return ResponseEntity.ok(profissional);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
         }
@@ -61,8 +62,8 @@ public class ProfissionalController {
     @PostMapping
     public ResponseEntity<String> createProfissional(@RequestBody ProfissionalDTO profissionalDTO) {
         try {
-            ProfissionalDTO profissional = service.createProfissional(profissionalDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional cadastrado com sucesso: " + profissional.getNome());
+            Profissional profissional = service.createProfissional(profissionalDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional cadastrado com sucesso: " + profissional.getId());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID do profissional já existe", e);
         } catch (Exception e) {

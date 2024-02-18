@@ -1,11 +1,10 @@
 package com.simplesdental.contatosapi.service.impl;
 
 import com.simplesdental.contatosapi.model.Contato;
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
 import com.simplesdental.contatosapi.model.dto.ContatoResponse;
-import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.model.mapper.ContatoMapper;
-import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
 import com.simplesdental.contatosapi.service.ContatoService;
 import com.simplesdental.contatosapi.service.ProfissionaisService;
@@ -79,8 +78,8 @@ public class ContatoServiceImpl implements ContatoService {
         }
         try {
             int id = Integer.parseInt(q);
-            ProfissionalDTO profissionalDTO = profissionaisService.findById(id);
-            return contato.getProfissional() == ProfissionalMapper.toModel(profissionalDTO) || contato.getId() == Integer.parseInt(q);
+            Profissional profissional = profissionaisService.findById(id);
+            return contato.getProfissional() == profissional || contato.getId() == Integer.parseInt(q);
         } catch (NumberFormatException e) {
             return false;
         }
@@ -94,14 +93,14 @@ public class ContatoServiceImpl implements ContatoService {
      * @return DTO do contato criado.
      */
     @Override
-    public ContatoReceiver createContato(ContatoReceiver contatoReceiver) {
+    public ContatoResponse createContato(ContatoReceiver contatoReceiver) {
         Contato contato = new Contato();
         contato.setCreatedDate(LocalDateTime.now());
-        ProfissionalDTO profissional = profissionaisService.findById(contatoReceiver.getIdProfissional());
-        contato.setProfissional(ProfissionalMapper.toModel(profissional));
+        Profissional profissional = profissionaisService.findById(contatoReceiver.getIdProfissional());
+        contato.setProfissional(profissional);
         contato.setContato(contatoReceiver.getContato());
         contato.setNome(contatoReceiver.getNome());
-        return ContatoMapper.toReceiver(repository.save(contato));
+        return ContatoMapper.toResponse(repository.save(contato));
     }
 
     /**

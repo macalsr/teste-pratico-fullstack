@@ -1,5 +1,6 @@
 package com.simplesdental.contatosapi.service;
 
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public interface ProfissionaisService {
      * @param profissionalDTO O objeto ProfissionalDTO representando o novo profissional a ser criado.
      * @return O objeto ProfissionalDTO representando o profissional recém-criado.
      */
-    ProfissionalDTO createProfissional(ProfissionalDTO profissionalDTO);
+    Profissional createProfissional(ProfissionalDTO profissionalDTO);
 
     /**
      * Encontra um profissional pelo ID.
@@ -22,7 +23,7 @@ public interface ProfissionaisService {
      * @param id O ID do profissional a ser encontrado.
      * @return O objeto ProfissionalDTO representando o profissional encontrado.
      */
-    ProfissionalDTO findById(Integer id);
+    Profissional findById(Integer id);
 
 
     /**
@@ -32,7 +33,7 @@ public interface ProfissionaisService {
      * @param fields A lista de campos específicos a serem retornados.
      * @return Uma lista de objetos ProfissionalDTO representando os profissionais encontrados.
      */
-    List<ProfissionalDTO> findProfissionais(String q, List<String> fields);
+    List<Profissional> findProfissionais(String q, List<String> fields);
 
     /**
      * Atualiza um profissional existente.

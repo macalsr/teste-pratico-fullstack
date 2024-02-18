@@ -1,6 +1,7 @@
 package com.simplesdental.contatosapi.controller;
 
 import com.simplesdental.contatosapi.model.CargoEnum;
+import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.repository.ProfissionaisRepository;
 import com.simplesdental.contatosapi.service.ProfissionaisService;
@@ -35,10 +36,10 @@ public class ProfissionalControllerTest {
     private ProfissionaisRepository repository;
     @Test
     void getProfissionais_WhenCalled_ReturnsListOfProfissionaisVazio() {
-        List<ProfissionalDTO> expectedProfissionais = Collections.emptyList();
+        List<Profissional> expectedProfissionais = Collections.emptyList();
         when(profissionaisService.findProfissionais(null, null)).thenReturn(expectedProfissionais);
 
-        ResponseEntity<List<ProfissionalDTO>> response = profissionalController.getProfissionais(null, null);
+        ResponseEntity<List<Profissional>> response = profissionalController.getProfissionais(null, null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedProfissionais, response.getBody());
@@ -47,10 +48,10 @@ public class ProfissionalControllerTest {
 
     @Test
     void getProfissionais_WhenCalled_ReturnsListOfProfissionais() {
-        List<ProfissionalDTO> expectedProfissionais = Collections.emptyList();
+        List<Profissional> expectedProfissionais = Collections.emptyList();
         when(profissionaisService.findProfissionais("Maria", Arrays.asList("nome", "cargo"))).thenReturn(expectedProfissionais);
 
-        ResponseEntity<List<ProfissionalDTO>> response = profissionalController.getProfissionais("Maria", Arrays.asList("nome", "cargo"));
+        ResponseEntity<List<Profissional>> response = profissionalController.getProfissionais("Maria", Arrays.asList("nome", "cargo"));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedProfissionais, response.getBody());
@@ -60,10 +61,10 @@ public class ProfissionalControllerTest {
     @Test
     void getProfissionaisById_WhenValidId_ReturnsProfissionais() {
         int id = 1;
-        ProfissionalDTO expectedProfissional = new ProfissionalDTO();
+        Profissional expectedProfissional = new Profissional();
         when(profissionaisService.findById(id)).thenReturn(expectedProfissional);
 
-        ResponseEntity<ProfissionalDTO> response = profissionalController.getProfissionalById(id);
+        ResponseEntity<Profissional> response = profissionalController.getProfissionalById(id);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedProfissional, response.getBody());
@@ -72,13 +73,13 @@ public class ProfissionalControllerTest {
 
     @Test
     public void testCreateProfissional() {
-        ProfissionalDTO profissionalDTO = new ProfissionalDTO();
-        when(profissionaisService.createProfissional(any())).thenReturn(profissionalDTO);
+        Profissional profissional = new Profissional();
+        when(profissionaisService.createProfissional(any())).thenReturn(profissional);
 
         ResponseEntity<String> response = profissionalController.createProfissional(new ProfissionalDTO());
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Profissional cadastrado com sucesso: " + profissionalDTO.getNome(), response.getBody());
+        assertEquals("Profissional cadastrado com sucesso: " + profissional.getNome(), response.getBody());
     }
 
     @Test

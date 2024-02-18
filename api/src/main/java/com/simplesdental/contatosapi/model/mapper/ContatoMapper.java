@@ -32,6 +32,7 @@ public class ContatoMapper {
     }
     public static ContatoResponse toResponse(Contato contato) {
         ContatoResponse contatoResponse = ContatoResponse.builder()
+                .id(contato.getId())
                 .nome(contato.getNome())
                 .contato(contato.getContato())
                 .profissional(contato.getProfissional())
@@ -55,6 +56,8 @@ public class ContatoMapper {
         ContatoResponse contatoResponse = new ContatoResponse();
 
         if (fields == null || fields.isEmpty()) {
+            contatoResponse.setId(contato.getId());
+            contatoResponse.setCreatedDate(contato.getCreatedDate());
             contatoResponse.setNome(contato.getNome());
             contatoResponse.setContato(contato.getContato());
             if (contato.getProfissional() != null) {
@@ -71,6 +74,12 @@ public class ContatoMapper {
                         break;
                     case "profissional":
                         contatoResponse.setProfissional(contato.getProfissional());
+                        break;
+                    case "id":
+                        contatoResponse.setId(contato.getId());
+                        break;
+                    case "createdDate":
+                        contatoResponse.setCreatedDate(contato.getCreatedDate());
                         break;
                     default:
                         break;
