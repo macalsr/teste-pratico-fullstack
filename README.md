@@ -45,12 +45,12 @@ Antes de executar a aplicação, certifique-se de ter o Docker e o Docker-compos
 
 6. Acesse a aplicação em [http://localhost:8080](http://localhost:8080).
 
-## Caminhos dos Controllers
+### Caminhos dos Controllers
 
 - **ContatosController:** `/contatos`
 - **ProfissionalController:** `/profissionais`
 
-## Endpoints
+### Endpoints
 
 ### Contacts
 
