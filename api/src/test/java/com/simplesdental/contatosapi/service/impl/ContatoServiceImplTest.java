@@ -8,8 +8,8 @@ import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
-import com.simplesdental.contatosapi.repository.ProfissionaisRepository;
-import com.simplesdental.contatosapi.service.ProfissionaisService;
+import com.simplesdental.contatosapi.repository.ProfissionalRepository;
+import com.simplesdental.contatosapi.service.ProfissionalService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,10 +39,10 @@ class ContatoServiceImplTest {
     private ContatoRepository repository;
 
     @Mock
-    private ProfissionaisRepository profissionaisRepository;
+    private ProfissionalRepository profissionalRepository;
 
     @Mock
-    private ProfissionaisService profissionaisService;
+    private ProfissionalService profissionalService;
 
     @InjectMocks
     private ContatoServiceImpl contatoService;
@@ -178,7 +178,7 @@ class ContatoServiceImplTest {
                 new Contato(2,"Maria", "contato1",LocalDateTime.now(), ProfissionalMapper.toModel(profissionalDTO))
         );
         when(repository.findAll()).thenReturn(allContatos);
-        when(profissionaisService.findById(1)).thenReturn(profissional);
+        when(profissionalService.findById(1)).thenReturn(profissional);
 
         String q = "1";
         List<String> fields = Arrays.asList("nome", "contato", "profissional");

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
  * Interface de repositório para operações de persistência relacionadas à entidade Profissional.
  */
 @Repository
-public interface ProfissionaisRepository extends JpaRepository<Profissional, Integer> {
+public interface ProfissionalRepository extends JpaRepository<Profissional, Integer> {
 
 }

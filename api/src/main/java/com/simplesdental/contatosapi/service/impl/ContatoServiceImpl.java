@@ -7,7 +7,7 @@ import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.mapper.ContatoMapper;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
 import com.simplesdental.contatosapi.service.ContatoService;
-import com.simplesdental.contatosapi.service.ProfissionaisService;
+import com.simplesdental.contatosapi.service.ProfissionalService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class ContatoServiceImpl implements ContatoService {
     private ContatoRepository repository;
 
     @Autowired
-    private ProfissionaisService profissionaisService;
+    private ProfissionalService profissionalService;
 
 
     /**
@@ -78,7 +78,7 @@ public class ContatoServiceImpl implements ContatoService {
         }
         try {
             int id = Integer.parseInt(q);
-            Profissional profissional = profissionaisService.findById(id);
+            Profissional profissional = profissionalService.findById(id);
             return contato.getProfissional() == profissional || contato.getId() == Integer.parseInt(q);
         } catch (NumberFormatException e) {
             return false;
@@ -96,7 +96,7 @@ public class ContatoServiceImpl implements ContatoService {
     public ContatoResponse createContato(ContatoReceiver contatoReceiver) {
         Contato contato = new Contato();
         contato.setCreatedDate(LocalDateTime.now());
-        Profissional profissional = profissionaisService.findById(contatoReceiver.getIdProfissional());
+        Profissional profissional = profissionalService.findById(contatoReceiver.getIdProfissional());
         contato.setProfissional(profissional);
         contato.setContato(contatoReceiver.getContato());
         contato.setNome(contatoReceiver.getNome());

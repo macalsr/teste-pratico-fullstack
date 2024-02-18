@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Interface de serviço para operações relacionadas aos profissionais.
  */
-public interface ProfissionaisService {
+public interface ProfissionalService {
 
     /**
      * Cria um novo profissional.

@@ -2,7 +2,7 @@ package com.simplesdental.contatosapi.controller;
 
 import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
-import com.simplesdental.contatosapi.service.ProfissionaisService;
+import com.simplesdental.contatosapi.service.ProfissionalService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ProfissionalController {
 
     @Autowired
-    private ProfissionaisService service;
+    private ProfissionalService service;
 
     /**
      * Retorna uma lista de profissionais com base nos critérios especificados.

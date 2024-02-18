@@ -3,8 +3,8 @@ package com.simplesdental.contatosapi.service.impl;
 import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
-import com.simplesdental.contatosapi.repository.ProfissionaisRepository;
-import com.simplesdental.contatosapi.service.ProfissionaisService;
+import com.simplesdental.contatosapi.repository.ProfissionalRepository;
+import com.simplesdental.contatosapi.service.ProfissionalService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
  * Implementação do serviço para operações relacionadas a profissionais.
  */
 @Service
-public class ProfissionaisServiceImpl implements ProfissionaisService {
+public class ProfissionalServiceImpl implements ProfissionalService {
 
     @Autowired
-    private ProfissionaisRepository profissionaisRepository;
+    private ProfissionalRepository profissionalRepository;
 
 
     /**
@@ -35,7 +35,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
     public Profissional createProfissional(ProfissionalDTO profissionalDTO) {
         Profissional profissional = ProfissionalMapper.toModel(profissionalDTO);
         profissional.setCreatedDate(LocalDateTime.now());
-        return profissionaisRepository.save(profissional);
+        return profissionalRepository.save(profissional);
     }
 
     /**
@@ -47,7 +47,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      */
     @Override
     public Profissional findById(Integer id) {
-        return profissionaisRepository.findById(id)
+        return profissionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado"));
     }
 
@@ -60,7 +60,7 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      */
     @Override
     public List<Profissional> findProfissionais(String q, List<String> fields) {
-        List<Profissional> allProfissionais = profissionaisRepository.findAll();
+        List<Profissional> allProfissionais = profissionalRepository.findAll();
 
         List<Profissional> filteredProfissionais = allProfissionais;
         if (q != null && !q.isEmpty()) {
@@ -113,11 +113,11 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      */
     @Override
     public ProfissionalDTO updateProfissional(Integer id, ProfissionalDTO profissionalDTO) {
-        Profissional profissional = profissionaisRepository.findById(id)
+        Profissional profissional = profissionalRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado"));
 
         BeanUtils.copyProperties(profissionalDTO, profissional, "createdDate");
-        Profissional updatedProfissional = profissionaisRepository.save(profissional);
+        Profissional updatedProfissional = profissionalRepository.save(profissional);
         return ProfissionalMapper.toDTO(updatedProfissional);
     }
 
@@ -130,9 +130,9 @@ public class ProfissionaisServiceImpl implements ProfissionaisService {
      */
     @Override
     public void deleteProfissional(Integer id) {
-        if (!profissionaisRepository.existsById(id)) {
+        if (!profissionalRepository.existsById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
         }
-        profissionaisRepository.deleteById(id);
+        profissionalRepository.deleteById(id);
     }
 }

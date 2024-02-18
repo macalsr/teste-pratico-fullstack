@@ -3,7 +3,7 @@ package com.simplesdental.contatosapi.service.impl;
 import com.simplesdental.contatosapi.model.CargoEnum;
 import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
-import com.simplesdental.contatosapi.repository.ProfissionaisRepository;
+import com.simplesdental.contatosapi.repository.ProfissionalRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,13 +27,13 @@ import static org.mockito.Mockito.when;
  * Testes para a implementação do serviço de Profissionais.
  */
 @ExtendWith(MockitoExtension.class)
-class ProfissionaisServiceImplTest {
+class ProfissionalServiceImplTest {
 
     @Mock
-    private ProfissionaisRepository profissionaisRepository;
+    private ProfissionalRepository profissionalRepository;
 
     @InjectMocks
-    private ProfissionaisServiceImpl profissionaisService;
+    private ProfissionalServiceImpl profissionaisService;
 
     private ProfissionalDTO profissionalDTO;
 
@@ -47,18 +47,18 @@ class ProfissionaisServiceImplTest {
 
     @Test
     void testCreateProfissional() {
-        when(profissionaisRepository.save(any(Profissional.class))).thenReturn(new Profissional());
+        when(profissionalRepository.save(any(Profissional.class))).thenReturn(new Profissional());
 
         Profissional savedProfissional = profissionaisService.createProfissional(profissionalDTO);
 
-        verify(profissionaisRepository).save(any(Profissional.class));
+        verify(profissionalRepository).save(any(Profissional.class));
 
         assertNotNull(savedProfissional);
     }
 
     @Test
     void testFindById_ProfissionalExists() {
-        when(profissionaisRepository.findById(anyInt())).thenReturn(Optional.of(new Profissional()));
+        when(profissionalRepository.findById(anyInt())).thenReturn(Optional.of(new Profissional()));
 
         Profissional profissional = profissionaisService.findById(1);
 
@@ -67,14 +67,14 @@ class ProfissionaisServiceImplTest {
 
     @Test
     void testFindById_ProfissionalNotFound() {
-        when(profissionaisRepository.findById(anyInt())).thenReturn(Optional.empty());
+        when(profissionalRepository.findById(anyInt())).thenReturn(Optional.empty());
 
         assertThrows(ResponseStatusException.class, () -> profissionaisService.findById(1));
     }
 
     @Test
     void testFindProfissionais() {
-        when(profissionaisRepository.findAll()).thenReturn(Arrays.asList(new Profissional(), new Profissional()));
+        when(profissionalRepository.findAll()).thenReturn(Arrays.asList(new Profissional(), new Profissional()));
 
         List<Profissional> profissionais = profissionaisService.findProfissionais(null, null);
 
@@ -89,7 +89,7 @@ class ProfissionaisServiceImplTest {
                 new Profissional(1,"João", CargoEnum.SUPORTE, LocalDateTime.now(),LocalDateTime.now()),
                 new Profissional(2,"Maria", CargoEnum.DESIGNER, LocalDateTime.now(), LocalDateTime.now())
         );
-        when(profissionaisRepository.findAll()).thenReturn(allProfissionais);
+        when(profissionalRepository.findAll()).thenReturn(allProfissionais);
 
         String q = "Suporte";
         List<String> fields = Arrays.asList("nome", "cargo");
@@ -106,33 +106,33 @@ class ProfissionaisServiceImplTest {
 
     @Test
     void testUpdateProfissional() {
-        when(profissionaisRepository.findById(anyInt())).thenReturn(Optional.of(new Profissional()));
-        when(profissionaisRepository.save(any(Profissional.class))).thenReturn(new Profissional());
+        when(profissionalRepository.findById(anyInt())).thenReturn(Optional.of(new Profissional()));
+        when(profissionalRepository.save(any(Profissional.class))).thenReturn(new Profissional());
 
         ProfissionalDTO updatedProfissional = profissionaisService.updateProfissional(1, profissionalDTO);
 
-        verify(profissionaisRepository).findById(1);
-        verify(profissionaisRepository).save(any(Profissional.class));
+        verify(profissionalRepository).findById(1);
+        verify(profissionalRepository).save(any(Profissional.class));
 
         assertNotNull(updatedProfissional);
     }
 
     @Test
     void testDeleteProfissional_ProfissionalExists() {
-        when(profissionaisRepository.existsById(anyInt())).thenReturn(true);
+        when(profissionalRepository.existsById(anyInt())).thenReturn(true);
 
         profissionaisService.deleteProfissional(1);
 
-        verify(profissionaisRepository).existsById(1);
-        verify(profissionaisRepository).deleteById(1);
+        verify(profissionalRepository).existsById(1);
+        verify(profissionalRepository).deleteById(1);
     }
 
     @Test
     void testDeleteProfissional_ProfissionalNotFound() {
-        when(profissionaisRepository.existsById(anyInt())).thenReturn(false);
+        when(profissionalRepository.existsById(anyInt())).thenReturn(false);
 
         assertThrows(ResponseStatusException.class, () -> profissionaisService.deleteProfissional(1));
 
-        verify(profissionaisRepository).existsById(1);
+        verify(profissionalRepository).existsById(1);
     }
 }
