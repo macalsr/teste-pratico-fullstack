@@ -44,11 +44,11 @@ public class ProfissionalController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<ProfissionalDTO> getProfissionalById(@PathVariable Integer id) {
-        try {
-            ProfissionalDTO profissionalDTO = service.findById(id);
+        ProfissionalDTO profissionalDTO = service.findById(id);
+        if (profissionalDTO != null) {
             return ResponseEntity.ok(profissionalDTO);
-        } catch (ResponseStatusException e) {
-            return ResponseEntity.status(e.getStatusCode()).build();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
         }
     }
 
@@ -62,9 +62,11 @@ public class ProfissionalController {
     public ResponseEntity<String> createProfissional(@RequestBody ProfissionalDTO profissionalDTO) {
         try {
             ProfissionalDTO profissional = service.createProfissional(profissionalDTO);
-            return ResponseEntity.ok("Profissional cadastrado com sucesso: " + profissional.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional cadastrado com sucesso: " + profissional.getId());
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID do profissional já existe", e);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao cadastrar o profissional: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao cadastrar o profissional", e);
         }
     }
 
@@ -77,13 +79,11 @@ public class ProfissionalController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProfissional(@PathVariable Integer id, @RequestBody ProfissionalDTO profissionalDTO) {
-        try {
-            ProfissionalDTO updatedProfissional = service.updateProfissional(id, profissionalDTO);
-            return updatedProfissional != null ?
-                    ResponseEntity.ok("Profissional atualizado com sucesso") :
-                    ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao atualizar o profissional: " + e.getMessage());
+        ProfissionalDTO updatedProfissional = service.updateProfissional(id, profissionalDTO);
+        if (updatedProfissional != null) {
+            return ResponseEntity.ok("Profissional atualizado com sucesso");
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
         }
     }
 
@@ -98,8 +98,10 @@ public class ProfissionalController {
         try {
             service.deleteProfissional(id);
             return ResponseEntity.ok("Profissional excluído com sucesso");
+        } catch (ResponseStatusException e) {
+            throw e;
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao excluir o profissional: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao excluir o profissional", e);
         }
     }
 }
