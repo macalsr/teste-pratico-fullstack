@@ -4,7 +4,6 @@ import com.simplesdental.contatosapi.model.Profissional;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Classe de mapeamento responsável por mapear entre objetos Profissional e ProfissionalDTO.
@@ -21,19 +20,13 @@ public class ProfissionalMapper {
         if(profissional == null){
             return null;
         }
-        ProfissionalDTO profissionalDTO = ProfissionalDTO.builder()
+        return ProfissionalDTO.builder()
                 .id(profissional.getId())
                 .cargo(profissional.getCargo())
                 .nascimento(profissional.getNascimento())
                 .createdDate(profissional.getCreatedDate())
                 .nome(profissional.getNome())
                 .build();
-        if(profissional.getContatos() != null) {
-            profissionalDTO.setContatos(profissional.getContatos().stream()
-                    .map(ContatoMapper::toDTO)
-                    .collect(Collectors.toList()));
-        }
-        return profissionalDTO;
     }
 
     /**
@@ -51,13 +44,6 @@ public class ProfissionalMapper {
             profissionalDTO.setNascimento(profissional.getNascimento());
             profissionalDTO.setCreatedDate(profissional.getCreatedDate());
             profissionalDTO.setId(profissional.getId());
-            if(profissional.getContatos() != null) {
-                profissionalDTO.setContatos(
-                        profissional.getContatos().stream()
-                                .map(ContatoMapper::toDTO)
-                                .collect(Collectors.toList())
-                );
-            }
         } else {
             for (String field : fields) {
                 switch (field) {
@@ -75,13 +61,6 @@ public class ProfissionalMapper {
                         break;
                     case "id":
                         profissionalDTO.setId(profissional.getId());
-                        break;
-                    case "contatos":
-                        profissionalDTO.setContatos(
-                                profissional.getContatos().stream()
-                                        .map(ContatoMapper::toDTO)
-                                        .collect(Collectors.toList())
-                        );
                         break;
                     default:
                         break;
@@ -106,9 +85,6 @@ public class ProfissionalMapper {
                 .cargo(profissionalDTO.getCargo())
                 .nascimento(profissionalDTO.getNascimento())
                 .createdDate(profissionalDTO.getCreatedDate())
-                .contatos(profissionalDTO.getContatos().stream()
-                        .map(ContatoMapper::toModel)
-                        .collect(Collectors.toList()))
                 .build();
     }
 }

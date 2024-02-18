@@ -4,7 +4,6 @@ import com.simplesdental.contatosapi.model.CargoEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Classe DTO (Data Transfer Object) que representa um profissional.
@@ -41,5 +40,4 @@ public class ProfissionalDTO {
      */
     private LocalDateTime createdDate;
 
-    private List<ContatoDTO> contatos;
 }

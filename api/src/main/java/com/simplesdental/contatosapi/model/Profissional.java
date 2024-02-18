@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Classe que representa um profissional.
@@ -56,6 +55,4 @@ public class Profissional {
     @Column(name = "createdDate", updatable = false)
     private LocalDateTime createdDate;
 
-    @OneToMany(mappedBy = "profissional", cascade = CascadeType.ALL)
-    private List<Contato> contatos;
 }

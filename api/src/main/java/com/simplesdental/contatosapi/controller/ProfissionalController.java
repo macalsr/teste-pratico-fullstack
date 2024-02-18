@@ -79,13 +79,20 @@ public class ProfissionalController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<String> updateProfissional(@PathVariable Integer id, @RequestBody ProfissionalDTO profissionalDTO) {
-        ProfissionalDTO updatedProfissional = service.updateProfissional(id, profissionalDTO);
-        if (updatedProfissional != null) {
+        try {
+            service.updateProfissional(id, profissionalDTO);
             return ResponseEntity.ok("Profissional atualizado com sucesso");
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profissional não encontrado");
+        } catch (ResponseStatusException e) {
+            if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getReason());
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getReason());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
 
     /**
      * Exclui um profissional pelo ID.
@@ -99,9 +106,9 @@ public class ProfissionalController {
             service.deleteProfissional(id);
             return ResponseEntity.ok("Profissional excluído com sucesso");
         } catch (ResponseStatusException e) {
-            throw e;
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao excluir o profissional", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 }

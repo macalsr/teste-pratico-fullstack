@@ -87,6 +87,7 @@ public class ContatoMapper {
         return Contato.builder()
                 .id(contatoDTO.getId())
                 .contato(contatoDTO.getContato())
+                .createdDate(contatoDTO.getCreatedDate())
                 .profissional(ProfissionalMapper.toModel(contatoDTO.getProfissional()))
                 .nome(contatoDTO.getNome()).build();
     }
