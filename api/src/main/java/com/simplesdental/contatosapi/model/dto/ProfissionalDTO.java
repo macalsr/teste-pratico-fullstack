@@ -16,10 +16,9 @@ import java.time.LocalDateTime;
 public class ProfissionalDTO {
 
     /**
-     * Identificador único do profissional.
+     * ID do profissional.
      */
     private Integer id;
-
     /**
      * Nome do profissional.
      */
@@ -34,10 +33,5 @@ public class ProfissionalDTO {
      * Data de nascimento do profissional.
      */
     private LocalDateTime nascimento;
-
-    /**
-     * Data de criação do registro do profissional.
-     */
-    private LocalDateTime createdDate;
 
 }

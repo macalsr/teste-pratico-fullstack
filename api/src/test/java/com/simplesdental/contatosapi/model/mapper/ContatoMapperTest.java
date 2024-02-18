@@ -3,20 +3,21 @@ package com.simplesdental.contatosapi.model.mapper;
 import com.simplesdental.contatosapi.model.CargoEnum;
 import com.simplesdental.contatosapi.model.Contato;
 import com.simplesdental.contatosapi.model.Profissional;
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
-import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class ContatoMapperTest {
 
     @Test
-    void testToDTO() {
+    void testToReceiver() {
         Profissional profissional = Profissional.builder()
                 .id(1)
                 .cargo(CargoEnum.TESTER)
@@ -33,13 +34,36 @@ class ContatoMapperTest {
                 .profissional(profissional)
                 .build();
 
-        ContatoDTO contatoDTO = ContatoMapper.toDTO(contato);
+        ContatoReceiver contatoReceiver = ContatoMapper.toReceiver(contato);
 
-        assertEquals(contato.getId(), contatoDTO.getId());
-        assertEquals(contato.getNome(), contatoDTO.getNome());
-        assertEquals(contato.getContato(), contatoDTO.getContato());
-        assertEquals(contato.getCreatedDate(), contatoDTO.getCreatedDate());
-        assertEquals(contato.getProfissional().getCargo(), contatoDTO.getProfissional().getCargo());
+        assertEquals(contato.getNome(), contatoReceiver.getNome());
+        assertEquals(contato.getContato(), contatoReceiver.getContato());
+        assertEquals(contato.getProfissional().getId(), contatoReceiver.getIdProfissional());
+    }
+
+    @Test
+    void testToResponse() {
+        Profissional profissional = Profissional.builder()
+                .id(1)
+                .cargo(CargoEnum.TESTER)
+                .createdDate(LocalDateTime.now())
+                .nascimento(LocalDateTime.now())
+                .nome("Joao")
+                .build();
+
+        Contato contato = Contato.builder()
+                .id(1)
+                .nome("João")
+                .contato("joao@example.com")
+                .createdDate(LocalDateTime.now())
+                .profissional(profissional)
+                .build();
+
+        ContatoResponse contatoResponse = ContatoMapper.toResponse(contato);
+
+        assertEquals(contato.getNome(), contatoResponse.getNome());
+        assertEquals(contato.getContato(), contatoResponse.getContato());
+        assertEquals(contato.getProfissional().getId(), contatoResponse.getProfissional().getId());
     }
     @Test
     public void testMapContatoToDTO_AllFields() {
@@ -54,40 +78,13 @@ class ContatoMapperTest {
         fields.add("contato");
         fields.add("createdDate");
 
-        ContatoDTO contatoDTO = ContatoMapper.mapContatoToDTO(contato, fields);
+        ContatoResponse contatoReceiver = ContatoMapper.mapContatoToDTO(contato, fields);
 
-        assertNotNull(contatoDTO);
-        assertNull(contatoDTO.getId());
-        assertEquals(contato.getNome(), contatoDTO.getNome());
-        assertEquals(contato.getContato(), contatoDTO.getContato());
-        assertEquals(contato.getCreatedDate(), contatoDTO.getCreatedDate());
-        assertEquals(null, contatoDTO.getProfissional());
+        assertNotNull(contatoReceiver);
+        assertEquals(contato.getNome(), contatoReceiver.getNome());
+        assertEquals(contato.getContato(), contatoReceiver.getContato());
+        assertEquals(null, contatoReceiver.getProfissional());
     }
 
-    @Test
-    void testToModel() {
-        ProfissionalDTO profissional = ProfissionalDTO.builder()
-                .id(1)
-                .cargo(CargoEnum.TESTER)
-                .createdDate(LocalDateTime.now())
-                .nascimento(LocalDateTime.now())
-                .nome("Joao")
-                .build();
 
-        ContatoDTO contatoDTO = ContatoDTO.builder()
-                .id(1)
-                .nome("João")
-                .contato("joao@example.com")
-                .createdDate(LocalDateTime.now())
-                .profissional(profissional)
-                .build();
-
-        Contato contato = ContatoMapper.toModel(contatoDTO);
-
-        assertEquals(contato.getId(), contatoDTO.getId());
-        assertEquals(contato.getNome(), contatoDTO.getNome());
-        assertEquals(contato.getContato(), contatoDTO.getContato());
-        assertEquals(contato.getCreatedDate(), contatoDTO.getCreatedDate());
-        assertEquals(contato.getProfissional().getCargo(), contatoDTO.getProfissional().getCargo());
-    }
 }

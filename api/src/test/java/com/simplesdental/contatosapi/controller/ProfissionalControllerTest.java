@@ -78,13 +78,12 @@ public class ProfissionalControllerTest {
         ResponseEntity<String> response = profissionalController.createProfissional(new ProfissionalDTO());
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals("Profissional cadastrado com sucesso: " + profissionalDTO.getId(), response.getBody());
+        assertEquals("Profissional cadastrado com sucesso: " + profissionalDTO.getNome(), response.getBody());
     }
 
     @Test
     public void testUpdateProfissional_Success() {
         ProfissionalDTO profissionalDTO = new ProfissionalDTO();
-        profissionalDTO.setId(1);
         profissionalDTO.setNome("Joao");
         profissionalDTO.setNascimento(LocalDateTime.now());
         profissionalDTO.setCargo(CargoEnum.TESTER);

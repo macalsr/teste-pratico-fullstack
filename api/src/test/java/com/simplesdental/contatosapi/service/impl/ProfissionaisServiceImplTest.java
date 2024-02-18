@@ -40,7 +40,6 @@ class ProfissionaisServiceImplTest {
     @BeforeEach
     void setUp() {
         profissionalDTO = new ProfissionalDTO();
-        profissionalDTO.setId(1);
         profissionalDTO.setNome("Joao");
         profissionalDTO.setNascimento(LocalDateTime.now());
         profissionalDTO.setCargo(CargoEnum.TESTER);
@@ -102,7 +101,6 @@ class ProfissionaisServiceImplTest {
 
         ProfissionalDTO profissionalDTO = profissionais.get(0);
         assertNotNull(profissionalDTO.getNome());
-        assertNull(profissionalDTO.getCreatedDate());
         assertEquals(CargoEnum.SUPORTE, profissionalDTO.getCargo());
     }
 

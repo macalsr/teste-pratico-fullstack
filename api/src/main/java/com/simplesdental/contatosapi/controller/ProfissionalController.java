@@ -62,7 +62,7 @@ public class ProfissionalController {
     public ResponseEntity<String> createProfissional(@RequestBody ProfissionalDTO profissionalDTO) {
         try {
             ProfissionalDTO profissional = service.createProfissional(profissionalDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional cadastrado com sucesso: " + profissional.getId());
+            return ResponseEntity.status(HttpStatus.CREATED).body("Profissional cadastrado com sucesso: " + profissional.getNome());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID do profissional já existe", e);
         } catch (Exception e) {

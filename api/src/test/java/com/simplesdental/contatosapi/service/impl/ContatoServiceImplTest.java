@@ -2,7 +2,8 @@ package com.simplesdental.contatosapi.service.impl;
 
 import com.simplesdental.contatosapi.model.CargoEnum;
 import com.simplesdental.contatosapi.model.Contato;
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
@@ -48,11 +49,10 @@ class ContatoServiceImplTest {
     private ProfissionalDTO profissionalDTO;
     private Contato mockContato;
 
-    private ContatoDTO mockContatoDTO;
+    private ContatoReceiver mockContatoReceiver;
     @BeforeEach
     void setUp() {
         profissionalDTO = new ProfissionalDTO();
-        profissionalDTO.setId(1);
         profissionalDTO.setNome("Joao");
         profissionalDTO.setNascimento(LocalDateTime.now());
         profissionalDTO.setCargo(CargoEnum.TESTER);
@@ -64,11 +64,10 @@ class ContatoServiceImplTest {
         mockContato.setCreatedDate(LocalDateTime.now());
         mockContato.setProfissional(ProfissionalMapper.toModel(profissionalDTO));
 
-        mockContatoDTO = new ContatoDTO();
-        mockContatoDTO.setId(1);
-        mockContatoDTO.setNome("Test");
-        mockContatoDTO.setContato("test@test.com");
-        mockContatoDTO.setProfissional(profissionalDTO);
+        mockContatoReceiver = new ContatoReceiver();
+        mockContatoReceiver.setNome("Test");
+        mockContatoReceiver.setContato("test@test.com");
+        mockContatoReceiver.setIdProfissional(profissionalDTO.getId());
 
     }
 
@@ -76,12 +75,10 @@ class ContatoServiceImplTest {
     void testFindById_ContatoFound() {
         when(repository.findById(1)).thenReturn(Optional.of(mockContato));
 
-        ContatoDTO result = contatoService.findById(1);
+        ContatoResponse result = contatoService.findById(1);
         assertNotNull(result);
-        assertEquals(mockContato.getId(), result.getId());
         assertEquals(mockContato.getNome(), result.getNome());
         assertEquals(mockContato.getContato(), result.getContato());
-        assertEquals(mockContato.getCreatedDate(), result.getCreatedDate());
     }
 
     @Test
@@ -96,8 +93,8 @@ class ContatoServiceImplTest {
 
         Contato mockContato1 = new Contato();
         mockContato1.setId(1);
-        mockContato1.setNome(mockContatoDTO.getNome());
-        mockContato1.setContato(mockContatoDTO.getContato());
+        mockContato1.setNome(mockContatoReceiver.getNome());
+        mockContato1.setContato(mockContatoReceiver.getContato());
         mockContato1.setCreatedDate(LocalDateTime.now());
         mockContato1.setProfissional(ProfissionalMapper.toModel(profissionalDTO));
 
@@ -111,14 +108,13 @@ class ContatoServiceImplTest {
             return savedContato;
         });
 
-        ContatoDTO result = contatoService.createContato(mockContatoDTO);
+        ContatoReceiver result = contatoService.createContato(mockContatoReceiver);
 
         verify(repository).save(any(Contato.class));
 
         assertNotNull(result);
-        assertEquals(mockContatoDTO.getNome(), result.getNome());
-        assertEquals(mockContatoDTO.getContato(), result.getContato());
-        assertNotNull(result.getId());
+        assertEquals(mockContatoReceiver.getNome(), result.getNome());
+        assertEquals(mockContatoReceiver.getContato(), result.getContato());
     }
     @Test
     void testFindContatos() {
@@ -127,7 +123,7 @@ class ContatoServiceImplTest {
         mockContato2.setId(2);
         when(repository.findAll()).thenReturn(List.of(mockContato1, mockContato2));
 
-        List<ContatoDTO> contatos = contatoService.findContatos(null, null);
+        List<ContatoResponse> contatos = contatoService.findContatos(null, null);
 
         assertNotNull(contatos);
         assertEquals(2, contatos.size());
@@ -139,7 +135,7 @@ class ContatoServiceImplTest {
 
         when(repository.findAll()).thenReturn(List.of(mockContato1, mockContato2));
 
-        List<ContatoDTO> result = contatoService.findContatos(null, null);
+        List<ContatoResponse> result = contatoService.findContatos(null, null);
 
         assertNotNull(result);
         assertEquals(2, result.size());
@@ -156,15 +152,14 @@ class ContatoServiceImplTest {
         String q = "Maria";
         List<String> fields = Arrays.asList("nome", "contato");
 
-        List<ContatoDTO> contatoDTOList = contatoService.findContatos(q, fields);
+        List<ContatoResponse> contatoReceiverList = contatoService.findContatos(q, fields);
 
-        assertNotNull(contatoDTOList);
-        assertEquals(1, contatoDTOList.size());
+        assertNotNull(contatoReceiverList);
+        assertEquals(1, contatoReceiverList.size());
 
-        ContatoDTO contatoDTO = contatoDTOList.get(0);
-        assertNotNull(contatoDTO.getNome());
-        assertNull(contatoDTO.getCreatedDate());
-        assertEquals("Maria", contatoDTO.getNome());
+        ContatoResponse contatoReceiver = contatoReceiverList.get(0);
+        assertNotNull(contatoReceiver.getNome());
+        assertEquals("Maria", contatoReceiver.getNome());
     }
 
     @Test
@@ -179,15 +174,13 @@ class ContatoServiceImplTest {
         String q = "1";
         List<String> fields = Arrays.asList("nome", "contato", "profissional");
 
-        List<ContatoDTO> contatoDTOList = contatoService.findContatos(q, fields);
+        List<ContatoResponse> contatoReceiverList = contatoService.findContatos(q, fields);
 
-        assertNotNull(contatoDTOList);
-        assertEquals(1, contatoDTOList.size());
+        assertNotNull(contatoReceiverList);
+        assertEquals(1, contatoReceiverList.size());
 
-        ContatoDTO contatoDTO = contatoDTOList.get(0);
-        assertNotNull(contatoDTO.getNome());
-        assertNull(contatoDTO.getCreatedDate());
-        assertEquals(profissionalDTO.getId(), contatoDTO.getProfissional().getId());
+        ContatoResponse contatoReceiver = contatoReceiverList.get(0);
+        assertNotNull(contatoReceiver.getNome());
     }
 
     @Test
@@ -195,7 +188,7 @@ class ContatoServiceImplTest {
         when(repository.findById(anyInt())).thenReturn(Optional.of(new Contato()));
         when(repository.save(any(Contato.class))).thenReturn(new Contato());
 
-        ContatoDTO updated = contatoService.updateContato(1, mockContatoDTO);
+        ContatoReceiver updated = contatoService.updateContato(1, mockContatoReceiver);
 
         verify(repository).findById(1);
         verify(repository).save(any(Contato.class));

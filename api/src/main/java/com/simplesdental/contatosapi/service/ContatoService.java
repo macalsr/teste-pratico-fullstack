@@ -1,6 +1,8 @@
 package com.simplesdental.contatosapi.service;
 
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
+
 import java.util.List;
 
 /**
@@ -14,7 +16,7 @@ public interface ContatoService {
      * @param contato O objeto ContatoDTO representando o novo contato a ser criado.
      * @return O objeto ContatoDTO representando o contato recém-criado.
      */
-    ContatoDTO createContato(ContatoDTO contato);
+    ContatoReceiver createContato(ContatoReceiver contato);
 
     /**
      * Encontra um contato pelo ID.
@@ -22,7 +24,7 @@ public interface ContatoService {
      * @param id O ID do contato a ser encontrado.
      * @return O objeto ContatoDTO representando o contato encontrado.
      */
-    ContatoDTO findById(Integer id);
+    ContatoResponse findById(Integer id);
 
     /**
      * Encontra contatos com base em um termo de pesquisa e campos específicos a serem retornados.
@@ -31,16 +33,16 @@ public interface ContatoService {
      * @param fields A lista de campos específicos a serem retornados.
      * @return Uma lista de objetos ContatoDTO representando os contatos encontrados.
      */
-    List<ContatoDTO> findContatos(String q, List<String> fields);
+    List<ContatoResponse> findContatos(String q, List<String> fields);
 
     /**
      * Atualiza um contato existente.
      *
      * @param id         O ID do contato a ser atualizado.
-     * @param contatoDTO O objeto ContatoDTO contendo as informações atualizadas do contato.
+     * @param contatoReceiver O objeto ContatoDTO contendo as informações atualizadas do contato.
      * @return O objeto ContatoDTO representando o contato atualizado.
      */
-    ContatoDTO updateContato(Integer id, ContatoDTO contatoDTO);
+    ContatoReceiver updateContato(Integer id, ContatoReceiver contatoReceiver);
 
     /**
      * Exclui um contato existente.

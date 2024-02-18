@@ -25,11 +25,9 @@ class ProfissionalMapperTest {
         ProfissionalDTO profissionalDTO = ProfissionalMapper.toDTO(profissional);
 
         assertNotNull(profissionalDTO);
-        assertEquals(profissional.getId(), profissionalDTO.getId());
         assertEquals(profissional.getNome(), profissionalDTO.getNome());
         assertEquals(profissional.getCargo(), profissionalDTO.getCargo());
         assertEquals(profissional.getNascimento(), profissionalDTO.getNascimento());
-        assertEquals(profissional.getCreatedDate(), profissionalDTO.getCreatedDate());
     }
 
     @Test
@@ -50,29 +48,23 @@ class ProfissionalMapperTest {
         ProfissionalDTO profissionalDTO = ProfissionalMapper.mapProfissionaisToDTO(profissional, fields);
 
         assertNotNull(profissionalDTO);
-        assertNull(profissionalDTO.getId());
         assertEquals(profissional.getNome(), profissionalDTO.getNome());
         assertEquals(profissional.getCargo(), profissionalDTO.getCargo());
         assertEquals(profissional.getNascimento(), profissionalDTO.getNascimento());
-        assertEquals(profissional.getCreatedDate(), profissionalDTO.getCreatedDate());
     }
 
    @Test
    void testToModel() {
       ProfissionalDTO profissionalDTO = new ProfissionalDTO();
-      profissionalDTO.setId(1);
       profissionalDTO.setNome("João");
       profissionalDTO.setCargo(CargoEnum.DESENVOLVEDOR);
       profissionalDTO.setNascimento(LocalDateTime.now());
-      profissionalDTO.setCreatedDate(LocalDateTime.now());
 
       Profissional profissional = ProfissionalMapper.toModel(profissionalDTO);
 
       assertNotNull(profissional);
-      assertEquals(profissional.getId(), profissionalDTO.getId());
       assertEquals(profissional.getNome(), profissionalDTO.getNome());
       assertEquals(profissional.getCargo(), profissionalDTO.getCargo());
       assertEquals(profissional.getNascimento(), profissionalDTO.getNascimento());
-      assertEquals(profissional.getCreatedDate(), profissionalDTO.getCreatedDate());
    }
 }

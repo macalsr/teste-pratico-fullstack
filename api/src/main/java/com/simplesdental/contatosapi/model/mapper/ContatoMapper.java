@@ -1,7 +1,8 @@
 package com.simplesdental.contatosapi.model.mapper;
 
 import com.simplesdental.contatosapi.model.Contato;
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import lombok.Builder;
 
 import java.util.List;
@@ -18,18 +19,29 @@ public class ContatoMapper {
      * @param contato O objeto Contato a ser convertido.
      * @return Objeto ContatoDTO representando o Contato.
      */
-    public static ContatoDTO toDTO(Contato contato) {
-        ContatoDTO contatoDTO = ContatoDTO.builder()
-                .id(contato.getId())
+    public static ContatoReceiver toReceiver(Contato contato) {
+        ContatoReceiver contatoReceiver = ContatoReceiver.builder()
                 .nome(contato.getNome())
                 .contato(contato.getContato())
+                .build();
+
+        if (contato.getProfissional() != null) {
+            contatoReceiver.setIdProfissional(contato.getProfissional().getId());
+        }
+        return contatoReceiver;
+    }
+    public static ContatoResponse toResponse(Contato contato) {
+        ContatoResponse contatoResponse = ContatoResponse.builder()
+                .nome(contato.getNome())
+                .contato(contato.getContato())
+                .profissional(contato.getProfissional())
                 .createdDate(contato.getCreatedDate())
                 .build();
 
         if (contato.getProfissional() != null) {
-            contatoDTO.setProfissional(ProfissionalMapper.toDTO(contato.getProfissional()));
+            contatoResponse.setProfissional(contato.getProfissional());
         }
-        return contatoDTO;
+        return contatoResponse;
     }
 
     /**
@@ -39,34 +51,26 @@ public class ContatoMapper {
      * @param fields  A lista de campos a serem incluídos no ContatoDTO mapeado.
      * @return Objeto ContatoDTO com os campos selecionados mapeados do Contato.
      */
-    public static ContatoDTO mapContatoToDTO(Contato contato, List<String> fields) {
-        ContatoDTO contatoDTO = new ContatoDTO();
+    public static ContatoResponse mapContatoToDTO(Contato contato, List<String> fields) {
+        ContatoResponse contatoResponse = new ContatoResponse();
 
         if (fields == null || fields.isEmpty()) {
-            contatoDTO.setId(contato.getId());
-            contatoDTO.setNome(contato.getNome());
-            contatoDTO.setContato(contato.getContato());
-            contatoDTO.setCreatedDate(contato.getCreatedDate());
+            contatoResponse.setNome(contato.getNome());
+            contatoResponse.setContato(contato.getContato());
             if (contato.getProfissional() != null) {
-                contatoDTO.setProfissional(ContatoMapper.toDTO(contato).getProfissional());
+                contatoResponse.setProfissional(contato.getProfissional());
             }
         } else {
             for (String field : fields) {
                 switch (field) {
                     case "nome":
-                        contatoDTO.setNome(contato.getNome());
+                        contatoResponse.setNome(contato.getNome());
                         break;
                     case "contato":
-                        contatoDTO.setContato(contato.getContato());
+                        contatoResponse.setContato(contato.getContato());
                         break;
                     case "profissional":
-                        contatoDTO.setProfissional(toDTO(contato).getProfissional());
-                        break;
-                    case "createdDate":
-                        contatoDTO.setCreatedDate(contato.getCreatedDate());
-                        break;
-                    case "id":
-                        contatoDTO.setId(contato.getId());
+                        contatoResponse.setProfissional(contato.getProfissional());
                         break;
                     default:
                         break;
@@ -74,21 +78,7 @@ public class ContatoMapper {
             }
         }
 
-        return contatoDTO;
+        return contatoResponse;
     }
 
-    /**
-     * Converte um objeto ContatoDTO em um objeto Contato.
-     *
-     * @param contatoDTO O objeto ContatoDTO a ser convertido.
-     * @return Objeto Contato representando o ContatoDTO.
-     */
-    public static Contato toModel(ContatoDTO contatoDTO) {
-        return Contato.builder()
-                .id(contatoDTO.getId())
-                .contato(contatoDTO.getContato())
-                .createdDate(contatoDTO.getCreatedDate())
-                .profissional(ProfissionalMapper.toModel(contatoDTO.getProfissional()))
-                .nome(contatoDTO.getNome()).build();
-    }
 }

@@ -1,6 +1,7 @@
 package com.simplesdental.contatosapi.controller;
 
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.service.ContatoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +21,10 @@ public class ContatosController {
     private ContatoService contatoService;
 
     @GetMapping
-    public ResponseEntity<List<ContatoDTO>> getContatos(@RequestParam(required = false) String q,
-                                                        @RequestParam(required = false) List<String> fields) {
+    public ResponseEntity<List<ContatoResponse>> getContatos(@RequestParam(required = false) String q,
+                                                             @RequestParam(required = false) List<String> fields) {
         try {
-            List<ContatoDTO> contatos = contatoService.findContatos(q, fields);
+            List<ContatoResponse> contatos = contatoService.findContatos(q, fields);
             return ResponseEntity.ok(contatos);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -31,9 +32,9 @@ public class ContatosController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContatoDTO> getContatoById(@PathVariable Integer id) {
+    public ResponseEntity<ContatoResponse> getContatoById(@PathVariable Integer id) {
         try {
-            ContatoDTO contato = contatoService.findById(id);
+            ContatoResponse contato = contatoService.findById(id);
             if (contato != null) {
                 return ResponseEntity.ok(contato);
             } else {
@@ -45,19 +46,19 @@ public class ContatosController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createContato(@RequestBody ContatoDTO contatoDTO) {
+    public ResponseEntity<String> createContato(@RequestBody ContatoReceiver contatoReceiver) {
         try {
-            ContatoDTO savedContato = contatoService.createContato(contatoDTO);
-            return ResponseEntity.ok("Sucesso contato com id " + savedContato.getId() + " cadastrado");
+            ContatoReceiver savedContato = contatoService.createContato(contatoReceiver);
+            return ResponseEntity.ok("Sucesso contato com nome " + savedContato.getNome() + " cadastrado");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> updateContato(@PathVariable Integer id, @RequestBody ContatoDTO contatoDTO) {
+    public ResponseEntity<String> updateContato(@PathVariable Integer id, @RequestBody ContatoReceiver contatoReceiver) {
         try {
-            contatoService.updateContato(id, contatoDTO);
+            contatoService.updateContato(id, contatoReceiver);
             return ResponseEntity.ok("Sucesso contato alterado");
         } catch (ResponseStatusException e) {
             if (e.getStatusCode().equals(HttpStatus.NOT_FOUND)) {

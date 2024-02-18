@@ -4,25 +4,22 @@ import com.simplesdental.contatosapi.model.Profissional;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ContatoDTO {
-
-    private Integer id;
+public class ContatoResponse {
 
     private String nome;
 
     private String contato;
 
-    private ProfissionalDTO profissional;
+    private Profissional profissional;
 
     private LocalDateTime createdDate;
+
 
 }

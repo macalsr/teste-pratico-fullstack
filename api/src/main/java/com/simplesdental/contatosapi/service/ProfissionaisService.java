@@ -24,6 +24,7 @@ public interface ProfissionaisService {
      */
     ProfissionalDTO findById(Integer id);
 
+
     /**
      * Encontra profissionais com base em um termo de pesquisa e campos específicos a serem retornados.
      *

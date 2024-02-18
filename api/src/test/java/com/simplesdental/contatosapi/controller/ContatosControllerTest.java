@@ -1,7 +1,8 @@
 package com.simplesdental.contatosapi.controller;
 
 import com.simplesdental.contatosapi.model.CargoEnum;
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.repository.ContatoRepository;
 import com.simplesdental.contatosapi.service.ContatoService;
@@ -38,10 +39,10 @@ class ContatosControllerTest {
 
     @Test
     void getContatos_WhenCalled_ReturnsListOfContatosVazio() {
-        List<ContatoDTO> expectedContatos = Collections.emptyList();
+        List<ContatoResponse> expectedContatos = Collections.emptyList();
         when(contatoService.findContatos(null, null)).thenReturn(expectedContatos);
 
-        ResponseEntity<List<ContatoDTO>> response = contatosController.getContatos(null, null);
+        ResponseEntity<List<ContatoResponse>> response = contatosController.getContatos(null, null);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContatos, response.getBody());
@@ -49,10 +50,10 @@ class ContatosControllerTest {
     }
     @Test
     void getContatos_WhenCalled_ReturnsListOfContatos() {
-        List<ContatoDTO> expectedContatos = Collections.emptyList();
+        List<ContatoResponse> expectedContatos = Collections.emptyList();
         when(contatoService.findContatos("Maria", Arrays.asList("nome", "contato"))).thenReturn(expectedContatos);
 
-        ResponseEntity<List<ContatoDTO>> response = contatosController.getContatos("Maria", Arrays.asList("nome", "contato"));
+        ResponseEntity<List<ContatoResponse>> response = contatosController.getContatos("Maria", Arrays.asList("nome", "contato"));
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContatos, response.getBody());
@@ -61,10 +62,10 @@ class ContatosControllerTest {
     @Test
     void getContatoById_WhenValidId_ReturnsContato() {
         int id = 1;
-        ContatoDTO expectedContato = new ContatoDTO();
+        ContatoResponse expectedContato = new ContatoResponse();
         when(contatoService.findById(id)).thenReturn(expectedContato);
 
-        ResponseEntity<ContatoDTO> response = contatosController.getContatoById(id);
+        ResponseEntity<ContatoResponse> response = contatosController.getContatoById(id);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(expectedContato, response.getBody());
@@ -73,29 +74,27 @@ class ContatosControllerTest {
 
     @Test
     public void testCreateContato() {
-        ContatoDTO mockContato = new ContatoDTO();
+        ContatoReceiver mockContato = new ContatoReceiver();
         when(contatoService.createContato(any())).thenReturn(mockContato);
 
-        ResponseEntity<String> response = contatosController.createContato(new ContatoDTO());
+        ResponseEntity<String> response = contatosController.createContato(new ContatoReceiver());
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals("Sucesso contato com id " + mockContato.getId() + " cadastrado", response.getBody());
+        assertEquals("Sucesso contato com nome " + mockContato.getNome() + " cadastrado", response.getBody());
     }
 
 
     @Test
     public void testUpdateContato_Success() {
         ProfissionalDTO profissionalDTO = new ProfissionalDTO();
-        profissionalDTO.setId(1);
         profissionalDTO.setNome("Joao");
         profissionalDTO.setNascimento(LocalDateTime.now());
         profissionalDTO.setCargo(CargoEnum.TESTER);
 
-        ContatoDTO mockContato = new ContatoDTO();
-        mockContato.setId(1);
+        ContatoReceiver mockContato = new ContatoReceiver();
         mockContato.setNome("Test");
         mockContato.setContato("test@test.com");
-        mockContato.setProfissional(profissionalDTO);
+        mockContato.setIdProfissional(profissionalDTO.getId());
         when(contatoService.updateContato(1, mockContato)).thenReturn(mockContato);
 
         ResponseEntity<String> response = contatosController.updateContato(1, mockContato);
@@ -106,10 +105,10 @@ class ContatosControllerTest {
 
     @Test
     public void testUpdateContato_ContatoNotFound() {
-        when(contatoService.updateContato(1, new ContatoDTO()))
+        when(contatoService.updateContato(1, new ContatoReceiver()))
                 .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
 
-        ResponseEntity<String> response = contatosController.updateContato(1, new ContatoDTO());
+        ResponseEntity<String> response = contatosController.updateContato(1, new ContatoReceiver());
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
         assertNull(response.getBody());

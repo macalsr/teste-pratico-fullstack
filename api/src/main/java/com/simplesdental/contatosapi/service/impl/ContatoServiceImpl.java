@@ -1,7 +1,8 @@
 package com.simplesdental.contatosapi.service.impl;
 
 import com.simplesdental.contatosapi.model.Contato;
-import com.simplesdental.contatosapi.model.dto.ContatoDTO;
+import com.simplesdental.contatosapi.model.dto.ContatoReceiver;
+import com.simplesdental.contatosapi.model.dto.ContatoResponse;
 import com.simplesdental.contatosapi.model.dto.ProfissionalDTO;
 import com.simplesdental.contatosapi.model.mapper.ContatoMapper;
 import com.simplesdental.contatosapi.model.mapper.ProfissionalMapper;
@@ -39,10 +40,10 @@ public class ContatoServiceImpl implements ContatoService {
      * @throws ResponseStatusException se o contato não for encontrado.
      */
     @Override
-    public ContatoDTO findById(Integer id) {
+    public ContatoResponse findById(Integer id) {
         Contato contato = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
-        return ContatoMapper.toDTO(contato);
+        return ContatoMapper.toResponse(contato);
     }
 
     /**
@@ -53,7 +54,7 @@ public class ContatoServiceImpl implements ContatoService {
      * @return Lista de DTOs dos contatos encontrados.
      */
     @Override
-    public List<ContatoDTO> findContatos(String q, List<String> fields) {
+    public List<ContatoResponse> findContatos(String q, List<String> fields) {
         List<Contato> allContatos = repository.findAll();
 
         List<Contato> filteredContatos = allContatos;
@@ -89,31 +90,35 @@ public class ContatoServiceImpl implements ContatoService {
     /**
      * Cria um novo contato.
      *
-     * @param contatoDTO DTO do contato a ser criado.
+     * @param contatoReceiver DTO do contato a ser criado.
      * @return DTO do contato criado.
      */
     @Override
-    public ContatoDTO createContato(ContatoDTO contatoDTO) {
-        Contato contato = ContatoMapper.toModel(contatoDTO);
+    public ContatoReceiver createContato(ContatoReceiver contatoReceiver) {
+        Contato contato = new Contato();
         contato.setCreatedDate(LocalDateTime.now());
-        return ContatoMapper.toDTO(repository.save(contato));
+        ProfissionalDTO profissional = profissionaisService.findById(contatoReceiver.getIdProfissional());
+        contato.setProfissional(ProfissionalMapper.toModel(profissional));
+        contato.setContato(contatoReceiver.getContato());
+        contato.setNome(contatoReceiver.getNome());
+        return ContatoMapper.toReceiver(repository.save(contato));
     }
 
     /**
      * Atualiza um contato existente.
      *
      * @param id          ID do contato a ser atualizado.
-     * @param contatoDTO DTO com os novos dados do contato.
+     * @param contatoReceiver DTO com os novos dados do contato.
      * @return DTO do contato atualizado.
      * @throws ResponseStatusException se o contato não for encontrado.
      */
     @Override
-    public ContatoDTO updateContato(Integer id, ContatoDTO contatoDTO) {
+    public ContatoReceiver updateContato(Integer id, ContatoReceiver contatoReceiver) {
         Contato contato = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Contato não encontrado"));
-        BeanUtils.copyProperties(contatoDTO, contato, "createdDate");
+        BeanUtils.copyProperties(contatoReceiver, contato, "createdDate");
         Contato updatedContato = repository.save(contato);
-        return ContatoMapper.toDTO(updatedContato);
+        return ContatoMapper.toReceiver(updatedContato);
     }
 
     /**

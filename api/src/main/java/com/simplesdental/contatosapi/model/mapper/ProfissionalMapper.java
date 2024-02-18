@@ -24,7 +24,6 @@ public class ProfissionalMapper {
                 .id(profissional.getId())
                 .cargo(profissional.getCargo())
                 .nascimento(profissional.getNascimento())
-                .createdDate(profissional.getCreatedDate())
                 .nome(profissional.getNome())
                 .build();
     }
@@ -42,8 +41,6 @@ public class ProfissionalMapper {
             profissionalDTO.setNome(profissional.getNome());
             profissionalDTO.setCargo(profissional.getCargo());
             profissionalDTO.setNascimento(profissional.getNascimento());
-            profissionalDTO.setCreatedDate(profissional.getCreatedDate());
-            profissionalDTO.setId(profissional.getId());
         } else {
             for (String field : fields) {
                 switch (field) {
@@ -55,12 +52,6 @@ public class ProfissionalMapper {
                         break;
                     case "nascimento":
                         profissionalDTO.setNascimento(profissional.getNascimento());
-                        break;
-                    case "createdDate":
-                        profissionalDTO.setCreatedDate(profissional.getCreatedDate());
-                        break;
-                    case "id":
-                        profissionalDTO.setId(profissional.getId());
                         break;
                     default:
                         break;
@@ -84,7 +75,6 @@ public class ProfissionalMapper {
                 .nome(profissionalDTO.getNome())
                 .cargo(profissionalDTO.getCargo())
                 .nascimento(profissionalDTO.getNascimento())
-                .createdDate(profissionalDTO.getCreatedDate())
                 .build();
     }
 }
